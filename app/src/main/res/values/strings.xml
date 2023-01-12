@@ -20,4 +20,7 @@
     <string name="chose_tools">You chose Tools.</string>
     <string name="chose_share">You chose Share.</string>
     <string name="chose_send">You chose Send.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment1">Soy el fragmento uno</string>
+    <string name="hello_blank_fragment2">Soy el fragmento dos</string>
 </resources>

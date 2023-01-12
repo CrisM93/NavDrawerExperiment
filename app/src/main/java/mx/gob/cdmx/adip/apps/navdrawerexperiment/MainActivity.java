@@ -5,47 +5,61 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    /**
-     * Creates the content view and toolbar, sets up the drawer layout and the
-     * action bar toggle, and sets up the navigation view.
-     * @param savedInstanceState    Saved instance state bundle.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        Toolbar toolbar = findViewById(R.id.button_appbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                    //      .setAction("Action", null).show();
+                    new MaterialAlertDialogBuilder(MainActivity.this)
+                            .setTitle("Titulo")
+                            .setMessage("Barra menú")
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(MainActivity.this, "Cancelado", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Toast.makeText(MainActivity.this, "Aceptado", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .show();
                 }
             });
         }
-
+        //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         if (drawer != null) {
             drawer.addDrawerListener(toggle);
         }
@@ -72,11 +86,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Inflates the options menu.
-     * @param menu  Menu to inflate
-     * @return      Returns true if menu is inflated.
-     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -84,32 +93,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    /**
-     * Handles a click on the Settings item in the options menu.
-     * @param item  Item in options menu that was clicked.
-     * @return      Returns true if the item was Settings.
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Handles a navigation drawer item click. It detects which item was
-     * clicked and displays a toast message showing which item.
-     * @param item  Item in the navigation drawer
-     * @return      Returns true after closing the nav drawer
-     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -120,11 +104,20 @@ public class MainActivity extends AppCompatActivity
                 // Handle the camera import action (for now display a toast).
                 drawer.closeDrawer(GravityCompat.START);
                 displayToast(getString(R.string.chose_camera));
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment, new TabFragment1())
+                        .commit();
+
                 return true;
             case R.id.nav_gallery:
                 // Handle the gallery action (for now display a toast).
                 drawer.closeDrawer(GravityCompat.START);
                 displayToast(getString(R.string.chose_gallery));
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment, new TabFragment2())
+                        .commit();
                 return true;
             case R.id.nav_slideshow:
                 // Handle the slideshow action (for now display a toast).
